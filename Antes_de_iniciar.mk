@@ -13,7 +13,7 @@
 
 # PASO DOS ACTIVAR EL ENTORNO VIRTUAL: 
 # powershell  venv\Scripts\Activate.ps1  
-# cmd: venv\Scripts\activate.bat
+# cmd: .venv\Scripts\activate.bat
 
 # PASO DOS ACTIVAR EL ENTORNO VIRTUAL: 
 # deactivate
@@ -25,6 +25,9 @@
 # pip install marshmallow
 # pip install pytest
 # pip install marshmallow python-dotenv
+
+# PARA INSTALAR TODAS LAS DEPENDENCIAS, DEBO GUARDARLAS EN UN ARCHIVO LLAMADO .requirements.txt POSTERIORMENTE COLOCO EN LA TERMINAL: pip install -r requirements.txt 
+# ESE comando instalara todas las dependencias que ingrese en el txt
 
 
 # CREAR BASES DE DATOS

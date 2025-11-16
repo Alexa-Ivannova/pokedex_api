@@ -10,8 +10,7 @@ import os
 # Instanciar = llamar la clase ... atributo = caracteristica ... metodos = acciones 
 app = Flask(__name__)
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL").strip()
-print("Valor data base",repr(DATABASE_URL))
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # ABRIR UNA CONECCIÓN EN LA BD
 def get_db():
@@ -33,95 +32,66 @@ def init_db():
         conn.commit()
         cur.close()
         conn.close()
-        print("TABLA TIPOS CREADA OK")
+
     except Exception as e:
         print("Error al iniciar la BD", e)
-    # finally:
-    #     if conn:
-    #         conn.close()
 
 init_db()
 
-# 3) Crear ruta (.route) con un endpoint ("/helath)") y un metodo (methods= [GET]) el @ es un decorador--> Identifica la función decoradora que envuelve otra función
-# 4) Crear función q retorna jsonify
-@app.route("/health", methods = ["GET"])
-def health():
-    return jsonify(
-        {
-            "status": 200,
-            "message": "ok",
-            "service": "Pokedex"
+# CREAR ENDPOINT (@app.route("apunte_a_la_ruta", methods = ["INGRESE METODO A USAR"]))
+@app.route("/types", methods = ["POST"])
+def create_type():
+    try:
+        data_body = request.get_json()
+        
+        name_type = data_body.get("name_type")
+        description = data_body.get("description")
+
+        if not name_type:
+            return jsonify({
+                "status": 400,
+                "message": "Name is required"
+            }), 400
+        
+        if not isinstance(name_type, str):
+            return jsonify({
+                "status": 400,
+                "message": "The name type must be str"
+            }), 400
+        
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("""
+                    INSERT INTO types(name, description)
+                    VALUES (%s,%s) RETURNING id;
+                    """, (name_type, description))
+        new_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        data_response = {
+            "name": name_type,
+            "description": description,
+            "id": new_id
         }
-    ), 200
 
-# Recibir un pokemon -- De acuerdo al pokemon devolver el tipo de ataque que hace y el daño que hace --
-# Endpoint Pokemon
+        return jsonify({
+            "status": 201,
+            "message": "Created type successfully",
+            "data": data_response
+        }), 201
 
-@app.route("/pokemon", methods = ["POST"])
-def pokemon():
-
-    # Capturar datos desde el body del cliente 
-    data_body = request.get_json()
-    name_pokemon = data_body.get("name_pokemon").capitalize()
-
-    # Listado de pokemones
-    pokemones = {
-        "Charmander": {
-            "tipo": "Fuego",
-            "daño": 50
-        },
-
-        "Gengar": {
-            "tipo": "Fantasma",
-            "daño": 45
-        },
-
-        "Eve": {
-            "tipo": "Gay",
-            "daño": 20
+    except Exception as e:
+        print(e)
+        return jsonify({
+            "status": 500,
+            "error": str(e)
         }
-    }
+        ), 500
 
-    # Captura error si no hay body:
-    if not data_body:
-        return jsonify({
-            "status": 400,
-            "message": f"El body se encuentra vacio",
-            "service": "Pokedex"
-        }), 400
-
-    # Captura error si el dato es != de string
-    if not isinstance(name_pokemon, str):
-        return jsonify({
-            "status": 400,
-            "message": f"El valor ingresado {name_pokemon} debe ser un texto",
-            "service": "Pokedex"
-        }), 400
-
-    # Captura error si el pokemon NO existe
-    if name_pokemon not in pokemones:
-        return jsonify({
-            "status": 404,
-            "message": f"El pokemon {name_pokemon} no fue encontrado",
-            "service": "Pokedex"
-        }), 404
-    
-    # De acuerdo al pokemon devolver el tipo de ataque que hace y el daño que hace
-    # Logica para devolver la data de acuerdo al pokemon seleccionado
-    for key_pokemon, values in pokemones.items():
-        if name_pokemon == key_pokemon:
-            result = (f"El pokemon es {name_pokemon} su tipo es {values["tipo"]} y el daño que hace es {values["daño"]}")
-
-    # Respuesta satisfactoria del endpoint
-    return jsonify({
-        "status": 200,
-        "message": "Ok",
-        "service": "Pokedex",
-        "data": result
-        }), 200
 
 # Encender servidor: escribir igual:
 if __name__ == "__main__":
     app.run(debug=True)
-
 
