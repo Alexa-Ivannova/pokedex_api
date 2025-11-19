@@ -7,6 +7,9 @@ from src.controllers.get_type_by_id_controller import specific_type
 from src.controllers.update_type_controller import update_type
 from src.controllers.delete_type_controller import delete_type
 
+# DECORADORES:
+from src.utils.route_guard_decorator import route_guard
+
 def register_type_routs(app):
     @app.route("/types", methods = ["POST"])
     def create_type_route():
@@ -14,9 +17,11 @@ def register_type_routs(app):
     
     # ENDPOINT TRAER LISTADO DE TODOS LOS TIPOS QUE HAY EN LA TABLA
     @app.route("/types", methods = ["GET"])
+    @route_guard("Hola, a mimir") 
     def list_type_route():
         return list_types()
     
+
     # END POINT PARA TRAER UN TIPO DE POKEMON ESPECIFICO
     @app.route("/type/id/<int:id>", methods =["GET"])
     def get_type_by_id_route(id):
@@ -24,6 +29,7 @@ def register_type_routs(app):
     
     # ENDPOINT PARA MODIFICAR UN DATO ESPECIFICO (PATCH)
     @app.route("/update/<int:id>", methods = ["PATCH"])
+    @route_guard("Modificar dato especifico")
     def update_type_route(id):
         return update_type(id)
     

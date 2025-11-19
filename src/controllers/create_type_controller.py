@@ -1,7 +1,6 @@
 # IMPORTAR DEPENDENCIAS:
 from flask import request, jsonify
-from src.db import get_db
-
+from src.services.type_services import type_service
 
 def create_type():
     try:
@@ -22,21 +21,12 @@ def create_type():
                 "message": "The name type must be str"
             }), 400
         
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("""
-                    INSERT INTO types(name, description)
-                    VALUES (%s,%s) RETURNING id;
-                    """, (name_type, description))
-        new_id = cur.fetchone()[0]
-        conn.commit()
-        cur.close()
-        conn.close()
+        type_created = type_service.create(name_type, description)
 
         data_response = {
             "name": name_type,
             "description": description,
-            "id": new_id
+            "id": type_created
         }
 
         return jsonify({
