@@ -37,3 +37,5 @@
 # VARIABLES DE ENTORNO: Se crean con .env ... guarda info privada, permite trabajar dentro de la api, pero no se puede compartir con nadie fuera del etorno de trabajo... ESTO TIENE LA BD... 
 
 # VARIABLE ENTORNO: DATABASE_URL
+
+# LEVANTAR SERVIDOR: python -m src.app 
