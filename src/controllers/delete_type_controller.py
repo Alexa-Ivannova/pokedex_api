@@ -1,6 +1,6 @@
 from flask import jsonify
-from src.db import get_db
 from src.controllers.get_type_by_id_controller import specific_type
+from src.services.type_services import type_service
 
 def delete_type(id):
     try:
@@ -10,20 +10,19 @@ def delete_type(id):
                 "status": 400,
                 "message": "Id not found"
             }), 400
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("""UPDATE types SET deleted_at = now()
-                    where id = %s;
-                    """,(id,))
-        conn.commit()
-        cur.close()
-        conn.close()
+        
+        type_deleted = type_service.delete(id)
+        if type_deleted != True:
+            return jsonify({
+                "status": 444,
+                "message": "Id wasn´t possible delete"
+            }),444
 
         return jsonify({
             "status": 200,
             "message": "Type deleted successfully"
         }), 200
-
+    
     except Exception as e:
         return jsonify({
             "status": 500,

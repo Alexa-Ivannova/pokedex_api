@@ -1,14 +1,38 @@
 # IMPORTAR DEPENDENCIAS:
 from flask import request, jsonify
-from src.db import get_db
+from src.services.type_services import type_service
+from marshmallow import ValidationError
 
-
+# IMPORTAS ESQUEMAS
+from src.schemas.types.types_schemas import validate_type_payload, TypeSchema
 def create_type():
+    type_schema = TypeSchema()
+    data_body = request.get_json()
+
+    # TRY PARA VALIDAR ERRORES EN DATA
     try:
-        data_body = request.get_json()
+        data_cleaned = type_schema.load(data_body)
         
-        name_type = data_body.get("name_type")
-        description = data_body.get("description")
+    except ValidationError as err:
+        return jsonify({
+            "status": 400,
+            "message": "Validation error",
+            "fields": err.messages
+        }), 400
+
+
+    try:
+        
+        # errors = validate_type_payload(data_body)
+        # if errors:
+        #     return jsonify({
+        #         "status": 400,
+        #         "message": "Validation error",
+        #         "fields": errors
+        #     }), 400
+
+        name_type = data_cleaned.get("name_type")
+        description = data_cleaned.get("description")
 
         if not name_type:
             return jsonify({
@@ -22,21 +46,12 @@ def create_type():
                 "message": "The name type must be str"
             }), 400
         
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("""
-                    INSERT INTO types(name, description)
-                    VALUES (%s,%s) RETURNING id;
-                    """, (name_type, description))
-        new_id = cur.fetchone()[0]
-        conn.commit()
-        cur.close()
-        conn.close()
+        type_created = type_service.create(name_type, description)
 
         data_response = {
             "name": name_type,
             "description": description,
-            "id": new_id
+            "id": type_created
         }
 
         return jsonify({
