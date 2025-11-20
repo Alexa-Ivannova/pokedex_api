@@ -1,13 +1,38 @@
 # IMPORTAR DEPENDENCIAS:
 from flask import request, jsonify
 from src.services.type_services import type_service
+from marshmallow import ValidationError
 
+# IMPORTAS ESQUEMAS
+from src.schemas.types.types_schemas import validate_type_payload, TypeSchema
 def create_type():
+    type_schema = TypeSchema()
+    data_body = request.get_json()
+
+    # TRY PARA VALIDAR ERRORES EN DATA
     try:
-        data_body = request.get_json()
+        data_cleaned = type_schema.load(data_body)
         
-        name_type = data_body.get("name_type")
-        description = data_body.get("description")
+    except ValidationError as err:
+        return jsonify({
+            "status": 400,
+            "message": "Validation error",
+            "fields": err.messages
+        }), 400
+
+
+    try:
+        
+        # errors = validate_type_payload(data_body)
+        # if errors:
+        #     return jsonify({
+        #         "status": 400,
+        #         "message": "Validation error",
+        #         "fields": errors
+        #     }), 400
+
+        name_type = data_cleaned.get("name_type")
+        description = data_cleaned.get("description")
 
         if not name_type:
             return jsonify({

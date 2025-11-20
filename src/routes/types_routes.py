@@ -10,11 +10,16 @@ from src.controllers.delete_type_controller import delete_type
 # DECORADORES:
 from src.utils.route_guard_decorator import route_guard
 
+# SCHEMAS
+from src.schemas.types.types_schemas import validate_type_payload_schema
+
 def register_type_routs(app):
+    # ENDPOINT CREAR TABLA TYPES        
     @app.route("/types", methods = ["POST"])
+    # @validate_type_payload_schema()
     def create_type_route():
         return create_type()
-    
+        
     # ENDPOINT TRAER LISTADO DE TODOS LOS TIPOS QUE HAY EN LA TABLA
     @app.route("/types", methods = ["GET"])
     @route_guard("Hola, a mimir") 
