@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 
 # IMPORTAS ESQUEMAS
 from src.schemas.types.types_schemas import validate_type_payload, TypeSchema
+
 def create_type():
     type_schema = TypeSchema()
     data_body = request.get_json()

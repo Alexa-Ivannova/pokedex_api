@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request, jsonify
-from marshmallow import Schema, fields, validate, ValidationError
+from marshmallow import Schema, fields, validate
 
 # ESQUEMA VANILLA 
 def validate_type_payload(data):
