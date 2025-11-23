@@ -3,6 +3,8 @@ from src.db import get_db
 
 class Trainer_service:
     def create_trainer(self, data):
+
+        # METODO CREAR
         try:
             id = data.get("id")
             name = data.get("name")

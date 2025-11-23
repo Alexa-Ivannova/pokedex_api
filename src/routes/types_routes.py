@@ -1,6 +1,4 @@
-from flask import jsonify
-
-# CONTROLADORES:
+# IMPRTAR CONTROLADORES:
 from src.controllers.create_type_controller import create_type
 from src.controllers.list_types_controller import list_types
 from src.controllers.get_type_by_id_controller import specific_type
@@ -16,6 +14,7 @@ from src.schemas.types.types_schemas import validate_type_payload_schema
 def register_type_routs(app):
     # ENDPOINT CREAR TABLA TYPES        
     @app.route("/types", methods = ["POST"])
+    # ESQUEMA MANUAL:
     # @validate_type_payload_schema()
     def create_type_route():
         return create_type()
@@ -25,7 +24,6 @@ def register_type_routs(app):
     @route_guard("Hola, a mimir") 
     def list_type_route():
         return list_types()
-    
 
     # END POINT PARA TRAER UN TIPO DE POKEMON ESPECIFICO
     @app.route("/type/id/<int:id>", methods =["GET"])

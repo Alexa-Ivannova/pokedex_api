@@ -1,19 +1,15 @@
 from flask import jsonify
 from src.db import get_db
 
+# SERVICIOS:
+from src.services.type_services import Type_service
+
 def specific_type(id):
     try:
-        
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("""SELECT * FROM types
-                    WHERE id = %s;""",(id,))
-        type_found = cur.fetchone()
-        print(type_found)
-        cur.close()
-        conn.close()
 
-        if not type_found or type_found[4]!= None:
+        data_db = Type_service.get_by_id(id)
+
+        if not data_db or data_db [4]!= None:
             return jsonify({
                 "status": 400,
                 "message": "id not found"
@@ -22,7 +18,7 @@ def specific_type(id):
         return jsonify({
             "status": 200,
             "message": "Specific type retrieved successfully",
-            "data": type_found
+            "data": data_db
         }),200
     
     except Exception as e:

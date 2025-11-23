@@ -1,18 +1,15 @@
 from src.db import get_db
 from flask import jsonify
 
+# SERVICIOS:
+from src.services.type_services import type_service
+
 def list_types():
     try:
-
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM types ORDER BY id;")
-        rows = cur.fetchall()
-        cur.close()
-        conn.close()
+        data_db = type_service.get_all()
         
         types = {}
-        for row in rows:
+        for row in data_db:
             if row[4]!= None:
                 continue
                 

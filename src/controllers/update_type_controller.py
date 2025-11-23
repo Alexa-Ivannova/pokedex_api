@@ -2,6 +2,8 @@ from flask import jsonify, request
 from src.db import get_db
 from src.controllers.get_type_by_id_controller import specific_type
 
+# SERVICIOS:
+from src.services.type_services import type_service
 
 
 def update_type(id):
@@ -17,14 +19,7 @@ def update_type(id):
         data_body = request.get_json()
         name_type = data_body.get("name_type")
 
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("""UPDATE types SET "name"=%s 
-                    WHERE id=%s;
-                    """,(name_type, id))
-        conn.commit()
-        cur.close()
-        conn.close()
+        type_service.update(name_type, id)
 
         return jsonify({
             "status": 200,
