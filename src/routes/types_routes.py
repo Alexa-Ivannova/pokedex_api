@@ -1,9 +1,9 @@
 # IMPRTAR CONTROLADORES:
-from src.controllers.create_type_controller import create_type
-from src.controllers.list_types_controller import list_types
-from src.controllers.get_type_by_id_controller import specific_type
-from src.controllers.update_type_controller import update_type
-from src.controllers.delete_type_controller import delete_type
+from src.controllers.types_controller.create_type_controller import create_type
+from src.controllers.types_controller.list_types_controller import list_types
+from src.controllers.types_controller.get_type_by_id_controller import specific_type
+from src.controllers.types_controller.update_type_controller import update_type
+from src.controllers.types_controller.delete_type_controller import delete_type
 
 # DECORADORES:
 from src.utils.route_guard_decorator import route_guard

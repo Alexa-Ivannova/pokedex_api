@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from src.db import get_db
-from src.controllers.get_type_by_id_controller import specific_type
+from src.controllers.types_controller.get_type_by_id_controller import specific_type
 
 # SERVICIOS:
 from src.services.type_services import type_service
