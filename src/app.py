@@ -2,8 +2,7 @@
 # 1) Importar dependencias para poder usarlas 
 from flask import Flask
 from dotenv import load_dotenv
-from src.routes.types_routes import register_type_routs
-from src.routes.trainers_routes import register_trainer_routes
+from src.routes.main_routes import (register_trainer_routes, register_type_routs, register_pokemon_routes)
 from src.models.main_model import(pokemon_db,trainers_db,types_db,captures_db)
 
 
@@ -14,6 +13,7 @@ load_dotenv()
 # Registrar las rutas 
 register_type_routs(app)
 register_trainer_routes(app)
+register_pokemon_routes(app)
 
 
 # Modelo (tabla) types 

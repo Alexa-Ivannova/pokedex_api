@@ -1,0 +1,3 @@
+from src.routes.types_routes import register_type_routs
+from src.routes.trainers_routes import register_trainer_routes
+from src.routes.pokemon_routes import register_pokemon_routes

@@ -26,7 +26,6 @@ class Type_service:
             cur.execute("""SELECT * FROM types
                         WHERE id = %s;""",(id,))
             type_found = cur.fetchone()
-            print(type_found)
             cur.close()
             conn.close()
             return type_found

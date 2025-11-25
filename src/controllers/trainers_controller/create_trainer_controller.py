@@ -54,10 +54,10 @@ def create_trainer():
         
 
         return jsonify({
-            "status": 200,
+            "status": 201,
             "message": "Create route is successfully",
             "data": response
-        }), 200
+        }), 201
 
 
     except Exception as e:
