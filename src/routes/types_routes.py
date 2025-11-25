@@ -26,7 +26,7 @@ def register_type_routs(app):
         return list_types()
 
     # END POINT PARA TRAER UN TIPO DE POKEMON ESPECIFICO
-    @app.route("/type/id/<int:id>", methods =["GET"])
+    @app.route("/type/update/id/<int:id>", methods =["GET"])
     def get_type_by_id_route(id):
         return specific_type(id)
     

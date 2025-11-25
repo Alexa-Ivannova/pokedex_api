@@ -1,5 +1,4 @@
 from flask import jsonify
-from src.db import get_db
 
 # SERVICIOS:
 from src.services.type_services import Type_service
