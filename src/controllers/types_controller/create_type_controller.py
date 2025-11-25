@@ -5,6 +5,8 @@ from marshmallow import ValidationError
 
 # IMPORTAS ESQUEMAS
 from src.schemas.types.types_schemas import validate_type_payload, TypeSchema
+
+# INICIO LOGICA DE NEGOCIO
 def create_type():
     type_schema = TypeSchema()
     data_body = request.get_json()
@@ -23,6 +25,7 @@ def create_type():
 
     try:
         
+        # ESQUEMA MANUAL
         # errors = validate_type_payload(data_body)
         # if errors:
         #     return jsonify({
@@ -46,8 +49,10 @@ def create_type():
                 "message": "The name type must be str"
             }), 400
         
+        # SERVICIO --> Traer o llevar información de o a la DB
         type_created = type_service.create(name_type, description)
 
+        # TRANFORMACIÓN DE DATA
         data_response = {
             "name": name_type,
             "description": description,
@@ -67,3 +72,5 @@ def create_type():
             "error": str(e)
         }
         ), 500
+    
+# FIN DE LA LOGICA DE NEGOCIO

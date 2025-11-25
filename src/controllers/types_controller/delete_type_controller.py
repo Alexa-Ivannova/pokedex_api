@@ -1,5 +1,5 @@
 from flask import jsonify
-from src.controllers.get_type_by_id_controller import specific_type
+from src.controllers.types_controller.get_type_by_id_controller import specific_type
 from src.services.type_services import type_service
 
 def delete_type(id):
