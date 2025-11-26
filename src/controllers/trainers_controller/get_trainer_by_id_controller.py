@@ -8,8 +8,6 @@ def get_trainer_by_id(id):
 
         data = trainer_service.get_by_id(id)
 
-        print("aqui ", data)
-
         if not data:
             return jsonify({
                 "status": 404,
@@ -21,8 +19,6 @@ def get_trainer_by_id(id):
                 "name": data[1],
                 "region": data[2]
             }
-
-        print("get_data_id_return: ", get_data_id_return)
 
         return jsonify({
             "status": 200,
