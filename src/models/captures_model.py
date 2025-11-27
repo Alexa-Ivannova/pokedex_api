@@ -10,8 +10,7 @@ def captures_db():
                     trainer_id VARCHAR(50) REFERENCES trainers(id) ON DELETE CASCADE,
                     pokemon_id INT REFERENCES pokemon(id) ON DELETE CASCADE,
                     capturated_at TIMESTAMP DEFAULT NOW(),
-                    freed_at TIMESTAMP,
-                    UNIQUE(trainer_id, pokemon_id)
+                    freed_at TIMESTAMP
                     );
                     """)
         
