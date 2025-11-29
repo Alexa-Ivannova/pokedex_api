@@ -23,17 +23,19 @@ def create_pokemon():
                 "status": 400,
                 "message": "Type Id is missing in request"
             }),400
-
+        
+        
         name_pokemon = pokemon_service.get_pokemon_by_name({"name": name})
         print("Nombre pokemon",name_pokemon)
 
-        search_pokemon_name = name_pokemon[1]
-
-        if name == search_pokemon_name:
-            return jsonify({
-                "status": 400,
-                "message": "Pokemon is already exist"
-            })
+        if name_pokemon: 
+            search_pokemon_name = name_pokemon[1]
+                
+            if name == search_pokemon_name:
+                return jsonify({
+                    "status": 400,
+                    "message": "Pokemon is already exist"
+                }),400
         
         type_pokemon = type_service.get_by_id(type_id)
 
