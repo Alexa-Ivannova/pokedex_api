@@ -1,4 +1,5 @@
 from src.db import get_db
+from datetime import datetime
 
 class Capture_service:
 
@@ -24,6 +25,26 @@ class Capture_service:
             print("Error get all captures: ", e)
             return None
         
+    # GET CAPTURE BY ID
+    def get_capture_by_id(self,id):
+        try:
+
+            conn = get_db()
+            cur = conn.cursor()
+
+            cur.execute("""
+                        select * from captures
+                        where id = %s;    
+                        """,(id,))
+            id_capture = cur.fetchone()
+            cur.close()
+            conn.close()
+            return id_capture
+        
+        except Exception as e:
+            print("Error get capture by id: ", e)
+            return None
+
     # GET BY TRAINER ID CAPTURE:
     def get_by_trainer_id_capture(self, id):
         try: 
@@ -129,8 +150,67 @@ class Capture_service:
         except Exception as e:
             print ("Error crear capture", e)
             return None
+
+    #METODO ACTUALIZAR CAPTURA
+    def update_capture(self,data):
+        try: 
+            id = data.get("id")
+            trainer_id = data.get("trainer_id")
+            pokemon_id = data.get("pokemon_id")
+            capturated_at = data.get("capturated_at")
+            freed_at = data.get("freed_at")
+
+            conn = get_db()
+            cur = conn.cursor()
+
+            if trainer_id:
+                cur.execute("""
+                            UPDATE captures SET trainer_id = %s
+                            WHERE id = %s;
+                            """, (trainer_id, id))
+                
+            if pokemon_id:
+                cur.execute("""
+                            UPDATE captures SET pokemon_id = %s
+                            WHERE id = %s;
+                            """, (pokemon_id, id))
+
+            if capturated_at:
+                cur.execute("""
+                            UPDATE captures SET capturated_at = %s
+                            WHERE id = %s;
+                            """, (capturated_at, id))
+                
+            if freed_at:
+                cur.execute("""
+                            UPDATE captures SET freed_at = %s
+                            WHERE id = %s;
+                            """, (freed_at, id))
+                
+            conn.commit()
+            cur.close()
+            conn.close()
+
+            id_capture_return = self.get_capture_by_id(id)
+            return id_capture_return  
         
+        except Exception as e:
+            print("Error update capture: ", e)
+            return None
+        
+    # METODO DELETE CAPTURE
+    def delete_capture(self, id):
+        try:
 
+            data ={
+                "id": id,
+                "freed_at": datetime.now()
+                }
+            
+            self.update_capture(data)
 
+        except Exception as e:
+            print("Error delete", e)
+            return None
 
 capture_service = Capture_service()

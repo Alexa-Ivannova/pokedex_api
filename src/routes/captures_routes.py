@@ -3,6 +3,8 @@ from src.controllers.capture_controller.create_capture_controller import create_
 from src.controllers.capture_controller.get_all_captures_controller import get_all_captures
 from src.controllers.capture_controller.get_captures_trainer_controller import get_captures_trainer
 from src.controllers.capture_controller.get_capture_pokemon_controller import get_capture_pokemon
+from src.controllers.capture_controller.update_capture_controller import update_capture
+from src.controllers.capture_controller.delete_capture_controller import delete_capture
 
 
 def register_captures_routes(app):
@@ -28,6 +30,12 @@ def register_captures_routes(app):
         return create_capture()
 
     # ENDPOINT ACTUALIZAR CAPTURA
+    @app.route("/capture/<int:id>", methods = ["PATCH"])
+    def update_capture_route(id):
+        return update_capture(id)
 
     #ENDPOINT ELIMINAR CAPTURA
+    @app.route("/capture/<int:id>", methods = ["DELETE"])
+    def delete_capture_route(id):
+        return delete_capture(id)
 
