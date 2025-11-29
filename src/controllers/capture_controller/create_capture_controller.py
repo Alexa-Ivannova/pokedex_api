@@ -32,6 +32,8 @@ def create_capture():
         search_trainer_id = trainer_service.get_by_id(trainer_id)
         search_pokemon_id = pokemon_service.get_pokemon_by_id(pokemon_id)
 
+        print("Pokemon id:", search_pokemon_id)
+
         if not search_pokemon_id:
             return jsonify({
                 "status": 404,
@@ -44,22 +46,30 @@ def create_capture():
                 "message": "Trainer not found"
             }), 404
         
-        # TODO PENDIENTE CREAR VALIDACIÓN DE SI YA EXISTE EL ENTRENADOR CON ESE POKEMON NO LO CREE
-        # SERVICIO Q LLAME AL ENTRENADOR Y VERIFIQUE SI YA ESTA CREADO CON ESE POKEMON
+        name_trainer = search_trainer_id[1]
+        name_pokemon = search_pokemon_id[1]
+        
+        #VALIDACIÓN DE SI YA EXISTE EL ENTRENADOR CON ESE POKEMON NO LO CREE
+        capture_match_trainer_and_pokemon = capture_service.get_match_trainer_and_pokemon_capture(data_body)
 
+        if capture_match_trainer_and_pokemon:
+            return jsonify({
+                "status": 400,
+                "message": "Capture exists"
+            }), 400
+
+        # CREAR CAPTURA
         capture_pokemon = capture_service.create_capture(data_body)
 
-        print("capture pokemon: ", capture_pokemon)
-
-        # data_body.append(capture_pokemon)
-        data_body["id"] = capture_pokemon[0]
-
-
+        response = {
+            "name_pokemon": name_pokemon,
+            "name_trainer": name_trainer
+        }
 
         return jsonify({
             "status": 200,
             "message": "Route create succsessfully",
-            "data": data_body
+            "data": response
         }), 200
     
     except Exception as e:
