@@ -6,6 +6,9 @@ from src.controllers.capture_controller.get_capture_pokemon_controller import ge
 from src.controllers.capture_controller.update_capture_controller import update_capture
 from src.controllers.capture_controller.delete_capture_controller import delete_capture
 
+# DECORADORES
+from src.controllers.auth.auth_controller import api_required
+
 
 def register_captures_routes(app):
 
@@ -26,16 +29,19 @@ def register_captures_routes(app):
 
     # ENDPOINT CREAR CAPTURA 
     @app.route("/capture", methods = ["POST"])
+    @api_required()
     def create_capture_route():
         return create_capture()
 
     # ENDPOINT ACTUALIZAR CAPTURA
     @app.route("/capture/<int:id>", methods = ["PATCH"])
+    @api_required()
     def update_capture_route(id):
         return update_capture(id)
 
     #ENDPOINT ELIMINAR CAPTURA
     @app.route("/capture/<int:id>", methods = ["DELETE"])
+    @api_required()
     def delete_capture_route(id):
         return delete_capture(id)
 

@@ -5,6 +5,8 @@ from src.controllers.pokemon_controller.get_pokemon_by_id_controller import get_
 from src.controllers.pokemon_controller.update_pokemon_controller import update_pokemon
 from src.controllers.pokemon_controller.delete_pokemon_controller import delete_pokemon
 
+# MIDELWARE
+from src.controllers.auth.auth_controller import api_required
 
 def register_pokemon_routes(app):
     # ENDPOINT GET_ALL PARA TRAER TODOS LOS ENTRENADORES
@@ -20,15 +22,18 @@ def register_pokemon_routes(app):
 
     # ENDPOINT CREAR POKEMON
     @app.route("/pokemon", methods = ["POST"])
+    @api_required()
     def create_pokemon_route():
         return create_pokemon()
     
     # ENDPOINT ACTUALIZAR ENTRENADOR
     @app.route("/pokemon/id/<int:id>", methods = ["PATCH"])
+    @api_required()
     def update_pokemon_route(id):
         return update_pokemon(id)
 
     #ENDPOINT ELIMINAR ENTRENADOR
     @app.route("/pokemon/id/<int:id>", methods = ["DELETE"])
+    @api_required()
     def delete_pokemon_route(id):
         return delete_pokemon(id)
